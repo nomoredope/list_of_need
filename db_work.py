@@ -31,8 +31,9 @@ def new_user_db(chat_id, username):
                 connection.commit()
         finally:
             connection.close()
+            return True
     else:
-        return
+        return False
 
 
 def check_user_db(ch_id):
