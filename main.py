@@ -21,7 +21,6 @@ def start(message):
 @bot.message_handler(commands=['new_product'])
 def new_product(message):
     bot.send_message(message.chat.id, f'Вставьте ссылку на необходимый продукт:')
-
     bot.register_next_step_handler(message, url_get)
 
 
@@ -32,6 +31,21 @@ def url_get(message):
         bot.send_message(message.chat.id, f'Найден шаблон: {res}', parse_mode='html')
     else:
         bot.send_message(message.chat.id, f'Все хуйня, давай по-новой', parse_mode='html')
+        new_product(message)
+    temp = None
+    json_in = open(f'C:\\Users\\schen\\PycharmProject\\pythonProject\\storage\\user_lib\\{message.chat.id}.json', 'r')
+    temp = json.load(json_in)
+    json_in.close()
+    dictionary = {
+        'url': message.text,
+        'price': 1,
+        'img_url': 2
+    }
+    temp['items'].append(dictionary)
+    with open(f'C:\\Users\\schen\\PycharmProject\\pythonProject\\storage\\user_lib\\{message.chat.id}.json',
+              'w') as outfile:
+        json.dump(temp, outfile)
+
 
 
 @bot.message_handler(commands=['maxim'])
